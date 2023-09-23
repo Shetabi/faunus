@@ -1,5 +1,8 @@
-install:
-	./mvnw clean install
+test:
+	./mvnw clean test
 
 run:
-	./mvnw spring-boot:run
+	./mvnw clean package && ./mvnw spring-boot:run
+
+deploy:
+	flyctl deploy
