@@ -10,6 +10,6 @@ public class MessageController {
 
     @GetMapping("/hello")
     ResponseEntity<Message> sayHello() {
-        return ResponseEntity.ok(new Message("hello"));
+        return ResponseEntity.ok(new Message("Hello World"));
     }
 }
