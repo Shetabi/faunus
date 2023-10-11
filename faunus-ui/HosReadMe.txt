@@ -36,6 +36,10 @@ $ git config --global user.email "ghosein.shetabivash@gmail.com"  or
 $ git config --global user.name ""
 
 13) for commiting just added file to master rep use git commit command
+$ git commit -m "Message"
+
+14)for sending changed files from staging area to repository use push command
+$ git push <rep> <branch>   <for shared project origin main
 
 14) for adding node files to faunus project execute npm inastall in npm cmd
 cmd> cd D:\_DevelopDeskTop\ProjectWorks\Faunus\faunus\faunus-ui
