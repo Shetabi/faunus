@@ -7,14 +7,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class PlantController {
 
     private final PlantService service;
 
-    @GetMapping("/plant")
-    ResponseEntity<Plant> getPlant() {
-        return ResponseEntity.ok(service.findDefaultPlant());
+    @GetMapping("/plants")
+    List<Plant> getPlants() {
+        return service.getAll();
     }
 }

@@ -21,5 +21,4 @@ public class Plant {
 
     private String name;
 
-    private byte[] image;
 }
