@@ -1,0 +1,11 @@
+services:
+  web:
+    build: faunus-api/
+    ports:
+      - "8080:8080"
+  ui:
+    build: faunus-ui/
+    ports:
+      - "3000:80"
+    depends_on:
+      - web
