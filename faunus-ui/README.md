@@ -1,106 +1,36 @@
-# Getting Started with Create React App
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Getting Started
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `make run`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `make test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-
-## Package structure
+First, run the development server:
 
 ```bash
-/src
-  /components
-    /Common
-      - Header.js
-      - Footer.js
-    /Auth
-      - LoginForm.js
-      - RegistrationForm.js
-    /Dashboard
-      - Dashboard.js
-      - Widget.js
-  /containers
-    /Public
-      - Home.js
-      - About.js
-    /Private
-      - DashboardPage.js
-      - ProfilePage.js
-  /context
-    - AuthContext.js
-  /hooks
-    - useFetch.js
-  /services
-    - authService.js
-    - apiService.js
-  /utils
-    - helpers.js
-  /styles
-    - main.css
-  /assets
-    /images
-    /fonts
-  /routes
-    - AppRouter.js
-  /redux
-    /actions
-    /reducers
-    /store.js
-  /config
-    - config.js
-  /tests
-  - index.js
-  - App.js
-  - index.css
-  - setupTests.js
-
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-Here's a breakdown of each directory in this suggested structure:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-- components: This is where you store your reusable UI components. You can further organize them by creating subdirectories for common components and components related to specific parts of your application.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-- containers: Containers are higher-level components that connect to your Redux store or manage state. Organize them based on whether they are meant for public or private routes.
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-- context: If you're using the Context API for state management, place your context providers and consumers here.
+## Learn More
 
-- hooks: Custom React hooks that you create for managing state, side effects, or other functionality.
+To learn more about Next.js, take a look at the following resources:
 
-- services: Place any services responsible for handling API requests, authentication, or other external interactions.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-- utils: Utility functions and helper files that don't fit neatly into components or services.
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-- styles: CSS or other styling files for your application.
+## Deploy on Vercel
 
-- assets: Store static assets like images and fonts here.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-- routes: Define your application's routing configuration here. You might have a single AppRouter.js file that manages routes using a library like react-router.
-
-- redux: If you're using Redux for state management, organize your actions, reducers, and the store configuration here.
-
-- config: Configuration files for your application, such as environment-specific settings.
-
-- tests: Place your unit tests and integration tests here, organized by component or feature.
-
-- index.js: The entry point of your application, where you typically render the root component and set up Redux or any other context providers.
-
-- App.js: The main component where you define the structure of your application, including routing.
-
-- index.css: Global styles for your application.
-
-- setupTests.js: Configuration for test setup.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
