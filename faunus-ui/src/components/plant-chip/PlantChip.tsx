@@ -4,7 +4,6 @@ import { Typography, Chip } from '@material-tailwind/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTemperatureLow } from '@fortawesome/free-solid-svg-icons';
-import "./PlantChip.css";
 
 interface PlantChipProps {
 }
