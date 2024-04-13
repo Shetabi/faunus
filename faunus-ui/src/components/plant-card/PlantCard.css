@@ -1,0 +1,10 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
+@layer components {
+    .card {
+        @apply sm:mx-0 md:mx-auto lg:mx-auto xl:mx-auto sm:px-0 md:px-4 sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl lg:flex lg:flex-col;
+    }
+}

@@ -8,7 +8,11 @@
 }
 
 body {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
 }
+
 
 .bg-primary-dark {
     background-color: #252E41;

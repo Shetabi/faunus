@@ -3,7 +3,6 @@
 import {
             ThemeProvider,
             Button,
-            TailwindProvider,
             Card,
             CardHeader,
             CardBody,
@@ -15,7 +14,6 @@ import {
 export {
             ThemeProvider,
             Button,
-            TailwindProvider,
             Card,
             CardHeader,
             CardBody,
