@@ -13,6 +13,9 @@ RUN npm install --production
 # Copy the rest of the application code
 COPY . .
 
+# Install Tailwind CSS and other necessary files
+RUN npm install tailwindcss postcss autoprefixer
+
 # Build the Next.js application
 RUN npm run build
 
@@ -27,6 +30,7 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/tailwind.config.ts ./tailwind.config.ts
 
 # Expose the port that the Next.js application runs on
 EXPOSE 3000

@@ -1,10 +1,10 @@
 import { Vazirmatn } from "next/font/google";
-import { Card, CardHeader, CardBody, Typography, Chip } from '@material-tailwind/react';
+import { Card, CardHeader, CardBody, Typography } from '@material-tailwind/react';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTemperatureLow } from '@fortawesome/free-solid-svg-icons';
 import { Plant } from "src/types/Plant";
+import PlantChip from 'src/components/plant-chip/PlantChip';
 import "./PlantCard.css";
 
 interface PlantCardProps {
@@ -35,12 +35,8 @@ const PlantCard: React.FC<PlantCardProps> = ({ plant }) => {
                 <Typography className={`text-white text-center font-semibold text-4xl m-5 ${vazirmatn.className}`} {...props}>
                       {plant.name}
                 </Typography>
-                <div className={`flex mb-6`}>
-                    <Chip className={`bg-accent  ${vazirmatn.className}`} value="هوای خنک" size="sm"
-                        icon={
-                            <FontAwesomeIcon icon={faTemperatureLow}   transform="shrink-6" className="text-white h-10 fa-solid"/>
-                    }/>
-                 </div>
+
+                <PlantChip/>
 
                 <Typography className={`text-white ${vazirmatn.className}`} {...props}>
                   چگونه گیاه را آبیاری کنیم. اینجا توضیح میدهیم چه گامهایی باید برداشت تا گیاه را آبیاری کرد.
