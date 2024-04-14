@@ -16,7 +16,7 @@ jest.mock('next/font/google', () => ({
 describe('PlantChip', () => {
     test('renders chip text', () => {
         const text = 'هوای خنک';
-        render(<PlantChip/>);
+        render(<PlantChip text={ text }/>);
         const chip = screen.getByTestId('chip-component');
 
         const textElement = within(chip).getByText(text);

@@ -1,14 +1,16 @@
 import { Vazirmatn } from "next/font/google";
 import { Typography, Chip } from '@material-tailwind/react';
+import { IconDefinition } from "@fortawesome/fontawesome-common-types";
+
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTemperatureLow } from '@fortawesome/free-solid-svg-icons';
 
 interface PlantChipProps {
+    text: string
+    icon: IconDefinition
 }
 
-library.add(faTemperatureLow);
 
 const vazirmatn = Vazirmatn({ subsets: ["latin"] });
 
@@ -16,12 +18,12 @@ const handlePointerLeave = () => {
     // No operation
 };
 
-const PlantChip: React.FC<PlantChipProps> = () => {
+const PlantChip: React.FC<PlantChipProps> = ( { text, icon } ) => {
     return (
         <div className={`flex reverse mb-6`}>
-            <Chip data-testid="chip-component" className={`bg-accent  ${vazirmatn.className}`} value="هوای خنک" size="sm"
+            <Chip data-testid="chip-component" className={`bg-accent  ${vazirmatn.className}`} value={ text } size="sm"
                 icon={
-                    <FontAwesomeIcon icon={faTemperatureLow} transform="shrink-1" className="text-white fa-solid"/>
+                    <FontAwesomeIcon icon={icon} transform="shrink-1" className="text-white fa-solid"/>
             }/>
          </div>
     );

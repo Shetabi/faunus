@@ -36,7 +36,7 @@ const PlantCard: React.FC<PlantCardProps> = ({ plant }) => {
                       {plant.name}
                 </Typography>
 
-                <PlantChip/>
+                <PlantChip icon={ faTemperatureLow } text='هوای خنک'/>
 
                 <Typography className={`text-white ${vazirmatn.className}`} {...props}>
                   چگونه گیاه را آبیاری کنیم. اینجا توضیح میدهیم چه گامهایی باید برداشت تا گیاه را آبیاری کرد.
