@@ -19,7 +19,7 @@ const handlePointerLeave = () => {
 const PlantChip: React.FC<PlantChipProps> = () => {
     return (
         <div className={`flex reverse mb-6`}>
-            <Chip className={`bg-accent  ${vazirmatn.className}`} value="هوای خنک" size="sm"
+            <Chip data-testid="chip-component" className={`bg-accent  ${vazirmatn.className}`} value="هوای خنک" size="sm"
                 icon={
                     <FontAwesomeIcon icon={faTemperatureLow} transform="shrink-1" className="text-white fa-solid"/>
             }/>
