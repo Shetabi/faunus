@@ -8,4 +8,4 @@ run:
 	./mvnw clean package && ./mvnw spring-boot:run
 
 deploy:
-	./mvnw clean install && flyctl deploy
+	./mvnw clean install && flyctl deploy --local-only

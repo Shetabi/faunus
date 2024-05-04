@@ -1,5 +1,5 @@
 run:
-	npm start
+	npm run dev
 
 deploy:
 	flyctl deploy

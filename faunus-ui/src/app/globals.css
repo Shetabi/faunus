@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    background-color: #252E41;
+    color: white;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+
+.bg-primary-dark {
+    background-color: #252E41;
+}
+
+.bg-primary-dark-lighter {
+    background-color: #2E3B52;
+}
+
+.bg-accent {
+    background-color: #7550A4;
+}
