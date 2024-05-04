@@ -1,10 +1,5 @@
-FROM ghcr.io/graalvm/graalvm-community:21
-WORKDIR /faunus
-COPY . .
-RUN ./mvnw -Pnative native:compile
-
-FROM debian:stable-slim
-VOLUME /tmp
-COPY --from=0 /faunus/target/faunus-api /app
+FROM eclipse-temurin:21.0.3_9-jre-ubi9-minimal
+WORKDIR /app
+COPY ./target/faunus-api-0.0.1-SNAPSHOT.jar ./app.jar
 EXPOSE 8080
-ENTRYPOINT ["/app"]
+CMD ["java", "-jar", "app.jar"]
