@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-const baseURL = process.env.BASE_URL || 'https://faunus.fly.dev';
+const baseURL = 'http://localhost:8080';
 
 const axiosInstance = axios.create({
   baseURL,

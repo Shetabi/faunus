@@ -9,10 +9,14 @@ import { Vazirmatn } from "next/font/google";
 import { Plant } from "src/types/Plant";
 import PlantRepository from 'src/repositories/PlantRepository';
 
-const vazirmatn = Vazirmatn({ subsets: ["latin"] });
+const vazirmatn = Vazirmatn({
+    subsets: ['latin'],
+    variable: '--font-vazirmatn',
+    }
+    );
 
 export default function Home() {
-    const [plant, setPlant] = useState<Plant>({ id: 0, name: '' });
+    const [plant, setPlant] = useState<Plant>({ id: 0, name: '', watering: undefined });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -23,13 +27,13 @@ export default function Home() {
                 setPlant(plant);
             } catch (error) {
                 console.error('Error fetching data:', error);
-                setPlant({ id: -1, name: '' });
+                setPlant({ id: -1, name: '', watering: undefined });
             }
         };
         fetchData();
     }, []);
         return (
-        <main>
+        <main className={vazirmatn.variable}>
             <PlantCard plant={ plant }/>
         </main>
       );
