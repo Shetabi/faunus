@@ -1,2 +1,2 @@
-INSERT INTO Plant (name)
-VALUES ('Ficus Lirata')
+INSERT INTO PLANT (id, name)
+VALUES (1, 'Ficus Lirata')

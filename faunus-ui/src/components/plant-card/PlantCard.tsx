@@ -5,6 +5,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTemperatureLow } from '@fortawesome/free-solid-svg-icons';
 import { Plant } from "src/types/Plant";
 import PlantChip from 'src/components/plant-chip/PlantChip';
+import WateringDetails from 'src/components/watering-details/WateringDetails';
 import "./PlantCard.css";
 
 interface PlantCardProps {
@@ -38,9 +39,7 @@ const PlantCard: React.FC<PlantCardProps> = ({ plant }) => {
 
                 <PlantChip icon={ faTemperatureLow } text='هوای خنک'/>
 
-                <Typography className={`text-white ${vazirmatn.className}`} {...props}>
-                  چگونه گیاه را آبیاری کنیم. اینجا توضیح میدهیم چه گامهایی باید برداشت تا گیاه را آبیاری کرد.
-                </Typography>
+                <WateringDetails watering={plant.watering}/>
             </CardBody>
         </Card>
     );
