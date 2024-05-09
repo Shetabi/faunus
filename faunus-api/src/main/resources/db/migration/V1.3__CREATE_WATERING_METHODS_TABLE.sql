@@ -1,5 +1,6 @@
-CREATE TABLE WateringMethods (
+CREATE TABLE WATERING_METHOD (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(128) NOT NULL,
+    method_key VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL
 );

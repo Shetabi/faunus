@@ -1,7 +1,6 @@
 package com.faunus.api.adapter.controller;
 
-import com.faunus.api.core.Plant;
-import com.faunus.api.core.PlantService;
+import com.faunus.api.core.plant.PlantService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +16,7 @@ public class PlantController {
     }
 
     @GetMapping("/plants")
-    List<Plant> getPlants() {
+    List<PlantDTO> getPlants() {
         return service.getAll();
     }
 }

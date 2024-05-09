@@ -1,4 +1,4 @@
-package com.faunus.api.core;
+package com.faunus.api.core.plant;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
