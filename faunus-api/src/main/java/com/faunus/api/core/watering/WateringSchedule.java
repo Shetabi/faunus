@@ -1,26 +1,25 @@
-package com.faunus.api.core.plant;
+package com.faunus.api.core.watering;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Plant {
+@EqualsAndHashCode(of = "id")
+public class WateringSchedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private Long ownerPlantId;
 
-    private Long wateringMethodId;
+    private Integer frequencyDays;
+
 }

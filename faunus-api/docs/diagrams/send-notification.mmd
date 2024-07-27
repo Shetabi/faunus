@@ -1,0 +1,10 @@
+sequenceDiagram
+    loop Every hour
+        faunus api->>faunus api: trigger
+        faunus api->>faunus api: find all schedules
+        alt should notify in next hour
+        faunus api->>firebase: sned notification
+        firebase->>faunus ui: send notification
+        faunus ui->>user: show watering notification
+        end
+    end

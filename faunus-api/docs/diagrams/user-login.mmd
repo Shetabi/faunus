@@ -1,0 +1,8 @@
+sequenceDiagram
+    user->>faunus ui: visit
+    faunus ui->>user: login page
+    user->>faunus ui: input username
+    faunus ui->>faunus api: get owner info
+    faunus api->>faunus ui: owner info
+    faunus ui->>faunus ui: store owner id
+    faunus ui->>user: ok
