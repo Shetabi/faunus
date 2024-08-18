@@ -39,6 +39,7 @@ public class WateringScheduleService {
                 .save(new WateringLog(null, ownerPlant.getId(), null, WateringEventType.SUBSCRIBED, token));
         log.info("Subscribe log created for owner plant id {} with ID {}", ownerPlant.getId(), subRecord.getId());
 
+        //todo: this is not a valid logic, after 'first watering' feature implemented, following log should be deleted
         WateringLog wateringRecord = wateringLogRepository
                 .save(new WateringLog(null, ownerPlant.getId(), null,
                         WateringEventType.WATERED, Instant.now().minus(1, ChronoUnit.DAYS).toString()));
