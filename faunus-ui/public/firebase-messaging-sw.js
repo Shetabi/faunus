@@ -4,13 +4,13 @@ importScripts('https://www.gstatic.com/firebasejs/10.5.0/firebase-messaging-comp
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBkn1rhH5G5o6CsyWlfuBKTDUkl6HkAHlM",
-  authDomain: "faunus-4a27c.firebaseapp.com",
-  projectId: "faunus-4a27c",
-  storageBucket: "faunus-4a27c.appspot.com",
-  messagingSenderId: "142280280684",
-  appId: "1:142280280684:web:52cf9f489b2be68e452649",
-  measurementId: "G-VTX9RBKVHK"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
 firebase.initializeApp(firebaseConfig);
