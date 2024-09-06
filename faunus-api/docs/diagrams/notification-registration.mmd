@@ -1,7 +1,13 @@
 sequenceDiagram
     user->>faunus ui: notify me
-    faunus ui->>firebase: get token
-    firebase->>faunus ui: token
-    faunus ui->>faunus api: register notification(token)
-    faunus api->>faunus ui: ok
-    faunus ui->>user: ok
+    faunus ui->>faunus api: get registration status
+    faunus api-->>faunus ui: status
+    alt not registered
+        faunus ui->>firebase: get token
+        firebase-->>faunus ui: token
+        faunus ui->>faunus api: register notification(token)
+        faunus api-->>faunus ui: ok
+        faunus ui->>user: ok
+    else registered
+        faunus ui->>user: ok
+    end

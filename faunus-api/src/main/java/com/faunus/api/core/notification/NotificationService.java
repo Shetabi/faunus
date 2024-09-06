@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -33,13 +31,10 @@ public class NotificationService {
         Optional<OwnerPlant> ownerPlant = ownerPlantRepository.findById(ownerPlantId);
 
         ownerPlant.ifPresent( op -> {
-            List<WateringLog> events = wateringLogRepository.findByOwnerPlantId(op.getId());
+            Optional<WateringLog> lastSubscribedLog = wateringLogRepository
+                    .findFirstWateringLogsByOwnerPlantIdAndTypeOrderByCreatedOnDesc(op.getId(), WateringEventType.SUBSCRIBED);
 
-            Optional<WateringLog> first = events.stream()
-                    .filter(wlog -> wlog.getType().equals(WateringEventType.SUBSCRIBED))
-                    .max(Comparator.comparing(WateringLog::getCreatedOn));
-
-            first.ifPresent(lastSubscribe -> {
+            lastSubscribedLog.ifPresent(lastSubscribe -> {
                 Message message = Message.builder()
                         .setToken(lastSubscribe.getPayload())
                         .setNotification(notification)

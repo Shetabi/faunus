@@ -8,9 +8,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +25,36 @@ public class WateringScheduleService {
     private final WateringLogRepository wateringLogRepository;
     private final OwnerPlantRepository ownerPlantRepository;
 
+    public WateringSubscriptionStatus getSubscriptionStatus(Long ownerId, Long plantId) {
+        OwnerPlant ownerPlant = ownerPlantRepository.findByOwnerIdAndPlantId(ownerId, plantId);
+        return decideSubscription(ownerPlant);
+    }
+
     @Transactional
-    public void registerWateringSchedule(Long ownerId, Long plantId, String token) {
+    public void unsubscribe(Long ownerId, Long plantId) {
+        OwnerPlant ownerPlant = ownerPlantRepository.findByOwnerIdAndPlantId(ownerId, plantId);
+
+        if (ownerPlant == null) {
+            throw new NotFoundException("No plant found for owner");
+        }
+
+        WateringSubscriptionStatus status = decideSubscription(ownerPlant);
+
+        if (status == WateringSubscriptionStatus.SUBSCRIBED) {
+            wateringLogRepository
+                    .save(new WateringLog(null,
+                            ownerPlant.getId(),
+                            null,
+                            WateringEventType.UN_SUBSCRIBED,
+                            null));
+
+            log.info("Owner %s unsubscribed to get watering notifications for plant %s".formatted(ownerId, plantId));
+        }
+
+    }
+
+    @Transactional
+    public void subscribe(Long ownerId, Long plantId, String token) {
 
         OwnerPlant ownerPlant = ownerPlantRepository.findByOwnerIdAndPlantId(ownerId, plantId);
 
@@ -39,12 +69,14 @@ public class WateringScheduleService {
                 .save(new WateringLog(null, ownerPlant.getId(), null, WateringEventType.SUBSCRIBED, token));
         log.info("Subscribe log created for owner plant id {} with ID {}", ownerPlant.getId(), subRecord.getId());
 
-        //todo: this is not a valid logic, after 'first watering' feature implemented, following log should be deleted
+        //todo:
+        // if following lines, we set watering a day before by default but this is a dubious logic
+        // users should enter the watering day themselves, but the feature its not implemented yet.
         WateringLog wateringRecord = wateringLogRepository
                 .save(new WateringLog(null, ownerPlant.getId(), null,
                         WateringEventType.WATERED, Instant.now().minus(1, ChronoUnit.DAYS).toString()));
-        log.info("Watering log created for owner plant id {} with ID {}", ownerPlant.getId(), wateringRecord.getId());
 
+        log.info("Watering log created for owner plant id {} with ID {}", ownerPlant.getId(), wateringRecord.getId());
     }
 
     public List<WateringSchedule> findDueSchedules() {
@@ -54,11 +86,27 @@ public class WateringScheduleService {
         return allSchedules.stream().filter(this::isDue).toList();
     }
 
+    private WateringSubscriptionStatus decideSubscription(OwnerPlant ownerPlant) {
+        Optional<WateringLog> lastSubscribe = wateringLogRepository
+                .findFirstWateringLogsByOwnerPlantIdAndTypeOrderByCreatedOnDesc(ownerPlant.getId(), WateringEventType.SUBSCRIBED);
+        Optional<WateringLog> lastUnSubscribe = wateringLogRepository
+                .findFirstWateringLogsByOwnerPlantIdAndTypeOrderByCreatedOnDesc(ownerPlant.getId(), WateringEventType.UN_SUBSCRIBED);
+
+        return lastSubscribe.map(
+                        s -> lastUnSubscribe.map(us -> {
+                            if (us.getCreatedOn().isAfter(s.getCreatedOn())) {
+                                return WateringSubscriptionStatus.NOT_SUBSCRIBED;
+                            } else {
+                                return WateringSubscriptionStatus.SUBSCRIBED;
+                            }
+                        }).orElse(WateringSubscriptionStatus.SUBSCRIBED)
+                )
+                .orElse(WateringSubscriptionStatus.NOT_SUBSCRIBED);
+    }
+
     private Boolean isDue(WateringSchedule schedule) {
-        List<WateringLog> logs = wateringLogRepository.findByOwnerPlantId(schedule.getOwnerPlantId());
-        Optional<WateringLog> lastWatering = logs.stream().filter(l -> l.getType().equals(WateringEventType.WATERED))
-                .max(Comparator.comparing(WateringLog::getCreatedOn))
-                .stream().findFirst();
+        Optional<WateringLog> lastWatering = wateringLogRepository
+                .findFirstWateringLogsByOwnerPlantIdAndTypeOrderByCreatedOnDesc(schedule.getOwnerPlantId(), WateringEventType.WATERED);
 
         return lastWatering.map(l -> passedDueDate(schedule, Instant.parse(l.getPayload())))
                 .orElse(false);

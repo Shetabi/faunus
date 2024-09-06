@@ -8,10 +8,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
 import java.time.Instant;
-import java.util.List;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
 
 import static com.faunus.api.core.watering.WateringScheduleFactory.of;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class WateringScheduleServiceTest {
+class WateringScheduleSubscriptionTest {
 
     @Mock
     private WateringScheduleRepository repository;
@@ -56,7 +56,7 @@ class WateringScheduleServiceTest {
                 List.of(
                         of(1L, 3),
                         of(2L, 6)));
-        when(wateringLogRepository.findByOwnerPlantId(any())).thenReturn(List.of(
+        when(wateringLogRepository.findFirstWateringLogsByOwnerPlantIdAndTypeOrderByCreatedOnDesc(any(), any())).thenReturn(Optional.of(
                 WateringLogFactory.of(WateringEventType.WATERED,
                         Instant.now().minus(3L, ChronoUnit.DAYS))
         ));
@@ -77,7 +77,7 @@ class WateringScheduleServiceTest {
                 List.of(
                         of(1L, 2),
                         of(2L, 6)));
-        when(wateringLogRepository.findByOwnerPlantId(any())).thenReturn(List.of(
+        when(wateringLogRepository.findFirstWateringLogsByOwnerPlantIdAndTypeOrderByCreatedOnDesc(any(), any())).thenReturn(Optional.of(
                 WateringLogFactory.of(WateringEventType.WATERED,
                         Instant.now().minus(4L, ChronoUnit.DAYS))
         ));
@@ -99,7 +99,7 @@ class WateringScheduleServiceTest {
                 .thenReturn(WateringLogFactory.of(WateringEventType.SUBSCRIBED, Instant.now()));
         when(repository.save(any())).thenReturn(WateringScheduleFactory.of(1L, 3));
 
-        sut.registerWateringSchedule(1L, 11L, "token");
+        sut.subscribe(1L, 11L, "token");
 
         verify(wateringLogRepository, times(2)).save(any());
         verify(repository).save(any());

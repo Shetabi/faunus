@@ -27,6 +27,7 @@ public class WateringLog {
     @CreatedDate
     private Instant createdOn;
 
+    @Enumerated(EnumType.STRING)
     private WateringEventType type;
 
     private String payload;
