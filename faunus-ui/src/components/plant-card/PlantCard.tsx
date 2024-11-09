@@ -4,7 +4,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTemperatureLow } from '@fortawesome/free-solid-svg-icons';
 import { Plant } from "src/types/Plant";
 import PlantChip from 'src/components/plant-chip/PlantChip';
-import WateringDetails from 'src/components/watering-details/WateringDetails';
+import {WateringDetailsProps, WateringDetails} from 'src/components/watering-details/WateringDetails';
 import "./PlantCard.css";
 
 interface PlantCardProps {
@@ -23,7 +23,12 @@ const props = {
     onPointerLeaveCapture: {handlePointerLeave}
 }
 
+
 const PlantCard: React.FC<PlantCardProps> = ({ plant }) => {
+    const watering: WateringDetailsProps = {
+        plantId: plant.id,
+        watering: plant.watering
+    }
     return (
         <Card className="card bg-primary-dark-lighter" {...props}>
             <CardHeader className="relative mt-3 h-100" {...props}>
@@ -36,7 +41,8 @@ const PlantCard: React.FC<PlantCardProps> = ({ plant }) => {
 
                 <PlantChip icon={ faTemperatureLow } text='هوای خنک'/>
 
-                <WateringDetails watering={plant.watering}/>
+                {typeof plant !== 'undefined' && typeof plant.id !== 'undefined'
+                && <WateringDetails watering={plant.watering} plantId={plant.id}/>}
             </CardBody>
         </Card>
     );

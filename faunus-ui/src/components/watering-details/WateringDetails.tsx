@@ -1,13 +1,17 @@
 import { Typography } from '@material-tailwind/react';
 import { Switch } from '@material-tailwind/react';
 import { WateringMethod } from 'src/types/WateringMethod';
+import { WateringSubscriptionStatus } from 'src/types/SubscriptionStatus';
 import { useState, useEffect } from 'react';
 import askPermission from 'src/utils/push-notification/request-permission';
+import WateringSubscriptionRepository from 'src/repositories/WateringSubscriptionRepository';
 
 interface WateringDetailsProps {
-    watering: WateringMethod
+    watering: WateringMethod,
+    plantId: number;
 }
 
+const repository = new WateringSubscriptionRepository();
 
 const handlePointerLeave = () => {
     // No operation
@@ -19,26 +23,47 @@ const props = {
     onPointerLeaveCapture: {handlePointerLeave}
 }
 
-const WateringDetails: React.FC<WateringDetailsProps> = ( { watering } ) => {
+const WateringDetails: React.FC<WateringDetailsProps> = ( { watering, plantId} ) => {
 
       const [wateringRegistered, setWateringRegistered] = useState(false);
 
-      // Load state from local storage on component mount
       useEffect(() => {
-        const savedState = localStorage.getItem('WATERING_REGISTERED');
-        if (savedState !== null) {
-          setWateringRegistered(JSON.parse(savedState));
-        }
+          const ownerId = localStorage.getItem('ownerId');
+          repository.fetchCurrentStatus(ownerId, plantId)
+          .then(response => {
+                console.log("status=" + " " + JSON.stringify(response));
+                if (response.status === WateringSubscriptionStatus.SUBSCRIBED) {
+                    setWateringRegistered(true);
+                } else {
+                    setWateringRegistered(false);
+                }
+          }).catch(err => {
+              console.log(JSON.stringify(err));
+              }
+
+          );
+
+
       }, []);
 
 
     const onToggleEvent = (e) => {
-        const newState = !wateringRegistered;
+
         askPermission().then(() => {
-            localStorage.setItem('WATERING_REGISTERED', newState);
-            setWateringRegistered(JSON.parse(newState));
+            const ownerId = localStorage.getItem('ownerId');
+            console.log(` toggle ${wateringRegistered}`);
+            if (!ownerId || !plantId) {
+                return;
+            }
+            if (!wateringRegistered) {
+                repository.subscribe(ownerId, plantId);
+                setWateringRegistered(true);
+            } else {
+                repository.unSubscribe(ownerId, plantId);
+                setWateringRegistered(false);
+            }
         }).catch((error) => {
-            console.log("permission denied");
+            console.log(error);
         });
     }
     return (
@@ -56,7 +81,7 @@ const WateringDetails: React.FC<WateringDetailsProps> = ( { watering } ) => {
     );
 }
 
-export default WateringDetails;
+export {WateringDetails, WateringDetailsProps};
 
 
 

@@ -50,12 +50,15 @@ public class AlphaTestingSetupService {
 
         Owner mohammad = createOwner("mohammad");
         Owner naeemeh = createOwner("naeemeh");
+        Owner hosein = createOwner("hosein");
         log.info("Owner mohammad created with id {}", mohammad.getId());
         log.info("Owner naeemeh created with id {}", naeemeh.getId());
+        log.info("Owner hosein created with id {}", hosein.getId());
 
 
         createOwnerPlant(mohammad, ficusLirata);
         createOwnerPlant(naeemeh, ficusLirata);
+        createOwnerPlant(hosein, ficusLirata);
     }
 
 

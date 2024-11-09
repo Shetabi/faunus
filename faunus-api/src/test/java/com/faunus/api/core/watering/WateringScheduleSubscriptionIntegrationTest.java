@@ -1,5 +1,6 @@
 package com.faunus.api.core.watering;
 
+import com.faunus.api.BaseTestSpringBoot;
 import com.faunus.api.core.owner.OwnerPlant;
 import com.faunus.api.core.owner.OwnerPlantRepository;
 import com.faunus.api.core.owner.OwnerRepository;
@@ -7,15 +8,14 @@ import com.faunus.api.core.plant.PlantRepository;
 import com.faunus.api.testuitls.IntegrationTestSetupService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-class WateringScheduleSubscriptionIntegrationTest {
+
+class WateringScheduleSubscriptionIntegrationTest extends BaseTestSpringBoot {
 
     @Autowired
     private OwnerRepository ownerRepository;

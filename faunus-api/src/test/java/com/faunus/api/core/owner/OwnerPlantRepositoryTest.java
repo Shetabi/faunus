@@ -1,18 +1,17 @@
 package com.faunus.api.core.owner;
 
+import com.faunus.api.BaseTestSpringBoot;
 import com.faunus.api.core.plant.Plant;
 import com.faunus.api.core.plant.PlantRepository;
-
 import com.faunus.api.core.watering.WateringMethod;
 import com.faunus.api.core.watering.WateringMethodRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DataJpaTest
-class OwnerPlantRepositoryTest {
+
+class OwnerPlantRepositoryTest extends BaseTestSpringBoot {
 
     @Autowired
     private OwnerRepository ownerRepository;

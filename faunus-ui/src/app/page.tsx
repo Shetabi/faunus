@@ -13,38 +13,19 @@ import 'firebase/messaging';
 import FCMTokenComp from 'src/components/push-notification/FCMTokenComp';
 import withAuth from 'src/components/auth/withAuth';
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyBkn1rhH5G5o6CsyWlfuBKTDUkl6HkAHlM",
-//   authDomain: "faunus-4a27c.firebaseapp.com",
-//   projectId: "faunus-4a27c",
-//   storageBucket: "faunus-4a27c.appspot.com",
-//   messagingSenderId: "142280280684",
-//   appId: "1:142280280684:web:52cf9f489b2be68e452649",
-//   measurementId: "G-VTX9RBKVHK"
-// };
-
-// if (!firebase.apps.length) {
-//   firebase.initializeApp(firebaseConfig);
-// } else {
-//   firebase.app();
-// }
-//
-// const messaging = firebase.messaging();
-
-
 const vazirmatn = Vazirmatn({
     subsets: ['latin'],
     variable: '--font-vazirmatn',
     }
 );
+const repository = new PlantRepository();
 
 function  Home() {
-    const [plant, setPlant] = useState<Plant>({ id: 0, name: '', watering: undefined });
+    const [plant, setPlant] = useState<Plant>({ });
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const repository = new PlantRepository();
                 const ownerId = localStorage.getItem('ownerId');
                 const plant = await repository.fetchPlant(ownerId);
                 setPlant(plant);

@@ -1,22 +1,23 @@
 package com.faunus.api.core.watering;
 
+import com.faunus.api.BaseTestSpringBoot;
 import com.faunus.api.core.owner.OwnerPlant;
 import com.faunus.api.core.owner.OwnerPlantRepository;
 import com.faunus.api.testuitls.IntegrationTestSetupService;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Comparator;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
-@Transactional
-class WateringScheduleUnSubscriptionIntegrationTest {
+class WateringScheduleUnSubscriptionIntegrationTest extends BaseTestSpringBoot {
 
+    @Autowired
+    private WateringScheduleRepository wateringScheduleRepository;
 
     @Autowired
     private WateringLogRepository wateringLogRepository;
@@ -74,6 +75,27 @@ class WateringScheduleUnSubscriptionIntegrationTest {
                 .stream()
                 .filter(l -> l.getType() == WateringEventType.UN_SUBSCRIBED))
                 .hasSize(1);
+    }
+
+    @Test
+    void afterUnsubscribeWateringScheduleIsDeleted() {
+        //Assume
+        OwnerPlant ownerPlant = setupService.setupOwnerPlant();
+        sut.subscribe(ownerPlant.getOwnerId(), ownerPlant.getPlantId(), "token");
+        boolean wateringScheduleExists = wateringScheduleRepository.findAll()
+                .stream().anyMatch(s -> s.getOwnerPlantId().equals(ownerPlant.getId()));
+        assertTrue(wateringScheduleExists);
+
+        //Act
+        sut.unsubscribe(ownerPlant.getOwnerId(), ownerPlant.getPlantId());
+
+
+        //Assert
+        boolean wateringScheduleExistsAfter = wateringScheduleRepository.findAll()
+                .stream().anyMatch(s -> s.getOwnerPlantId().equals(ownerPlant.getId()));
+
+        assertFalse(wateringScheduleExistsAfter);
+
     }
 
 }

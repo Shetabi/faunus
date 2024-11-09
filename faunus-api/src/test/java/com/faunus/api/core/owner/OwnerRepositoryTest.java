@@ -1,13 +1,12 @@
 package com.faunus.api.core.owner;
 
+import com.faunus.api.BaseTestSpringBoot;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DataJpaTest
-public class OwnerRepositoryTest {
+public class OwnerRepositoryTest extends BaseTestSpringBoot {
 
     @Autowired
     private OwnerRepository sut;

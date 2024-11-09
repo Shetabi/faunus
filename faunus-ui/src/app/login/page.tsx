@@ -14,7 +14,7 @@ export default function LoginPage() {
         const loginService = new LoginService();
         console.log(username);
         const response = await loginService.login(username);
-        localStorage.setItem('ownerId', response);
+        localStorage.setItem('ownerId', response.toString());
         router.push('/');
       }
       catch (error) {
@@ -25,7 +25,6 @@ export default function LoginPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 bg-primary-dark">
       <Card
-        component="form"
         sx={{
           display: 'flex',
           flexDirection: 'column',

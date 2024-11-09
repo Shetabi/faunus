@@ -21,7 +21,7 @@ import java.util.Optional;
 @Slf4j
 public class WateringScheduleService {
 
-    private final WateringScheduleRepository repository;
+    private final WateringScheduleRepository wateringScheduleRepository;
     private final WateringLogRepository wateringLogRepository;
     private final OwnerPlantRepository ownerPlantRepository;
 
@@ -39,6 +39,10 @@ public class WateringScheduleService {
         }
 
         WateringSubscriptionStatus status = decideSubscription(ownerPlant);
+
+        Optional<WateringSchedule> schedule = wateringScheduleRepository.findByOwnerPlantId(ownerPlant.getId());
+
+        schedule.ifPresent(wateringScheduleRepository::delete);
 
         if (status == WateringSubscriptionStatus.SUBSCRIBED) {
             wateringLogRepository
@@ -62,7 +66,7 @@ public class WateringScheduleService {
             throw new NotFoundException("No plant found for owner");
         }
 
-        WateringSchedule saved = repository.save(new WateringSchedule(null, ownerPlant.getId(), 1));
+        WateringSchedule saved = wateringScheduleRepository.save(new WateringSchedule(null, ownerPlant.getId(), 1));
         log.info("Watering schedule created with id {}", saved.getId());
 
         WateringLog subRecord = wateringLogRepository
@@ -80,7 +84,7 @@ public class WateringScheduleService {
     }
 
     public List<WateringSchedule> findDueSchedules() {
-        List<WateringSchedule> allSchedules = repository.findAll();
+        List<WateringSchedule> allSchedules = wateringScheduleRepository.findAll();
         log.info("Found {} schedules to check.", allSchedules.size());
 
         return allSchedules.stream().filter(this::isDue).toList();

@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const withAuth = (WrappedComponent) => {
-  return (props) => {
+  // Set the display name for the wrapped component for easier debugging
+  const WithAuthComponent = (props) => {
     const router = useRouter();
 
     useEffect(() => {
@@ -10,10 +11,15 @@ const withAuth = (WrappedComponent) => {
       if (!userId) {
         router.push('/login');
       }
-    }, []);
+    }, [router]);
 
     return <WrappedComponent {...props} />;
   };
+
+  // Add a display name for the HOC
+  WithAuthComponent.displayName = `WithAuth(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+
+  return WithAuthComponent;
 };
 
 export default withAuth;
