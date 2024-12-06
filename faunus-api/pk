@@ -1,0 +1,12 @@
+
+[Interface]
+PrivateKey = l+aZ2bEUXXUUP8I6cQMqqVIupkZ79aLScOwxQpdHI0s=
+Address = fdaa:2:70fd:a7b:16a9:0:a:702/120
+DNS = fdaa:2:70fd::3
+
+[Peer]
+PublicKey = yUyg63j5+17YeJ7gRhxoQuF6rvdX0JF59M6skytJFTQ=
+AllowedIPs = fdaa:2:70fd::/48
+Endpoint = ams1.gateway.6pn.dev:51820
+PersistentKeepalive = 15
+

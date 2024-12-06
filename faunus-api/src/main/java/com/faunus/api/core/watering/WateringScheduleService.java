@@ -40,9 +40,9 @@ public class WateringScheduleService {
 
         WateringSubscriptionStatus status = decideSubscription(ownerPlant);
 
-        Optional<WateringSchedule> schedule = wateringScheduleRepository.findByOwnerPlantId(ownerPlant.getId());
+        List<WateringSchedule> schedules = wateringScheduleRepository.findAllByOwnerPlantId(ownerPlant.getId());
 
-        schedule.ifPresent(wateringScheduleRepository::delete);
+        schedules.forEach(wateringScheduleRepository::delete);
 
         if (status == WateringSubscriptionStatus.SUBSCRIBED) {
             wateringLogRepository
