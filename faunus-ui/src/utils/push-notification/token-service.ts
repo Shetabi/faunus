@@ -13,17 +13,18 @@ const retrieveToken = async () => {
 
           if (permission === 'granted') {
             const currentToken = await getToken(messaging, {
-              vapidKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+              vapidKey: process.env.NEXT_PUBLIC_VAPIDKEY,
             });
             if (currentToken) {
+                console.log('token: ', currentToken);
               return currentToken;
             } else {
-              throw new Error('Permission not granted.')
+              throw new Error('Client token is empty.')
             }
           }
         }
       } catch (error) {
-        throw new Error('Failed to fetch token.');
+        throw new Error(JSON.stringify(error));
       }
 };
 

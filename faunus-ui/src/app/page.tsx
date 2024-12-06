@@ -10,7 +10,7 @@ import { Plant } from "src/types/Plant";
 import PlantRepository from 'src/repositories/PlantRepository';
 import firebase from 'firebase/app';
 import 'firebase/messaging';
-import FCMTokenComp from 'src/components/push-notification/FCMTokenComp';
+import NotificationListener from 'src/components/push-notification/NotificationListener';
 import withAuth from 'src/components/auth/withAuth';
 
 const vazirmatn = Vazirmatn({
@@ -38,7 +38,7 @@ function  Home() {
     }, []);
         return (
         <main className={vazirmatn.variable}>
-            <FCMTokenComp />
+            <NotificationListener />
             <PlantCard plant={ plant }/>
         </main>
       );

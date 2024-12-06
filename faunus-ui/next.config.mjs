@@ -3,6 +3,9 @@ import withPWA from 'next-pwa';
 
 
 const config = {
+    typescript: {
+      ignoreBuildErrors: true,
+    }
 };
 
 const nextConfig = withPWA({

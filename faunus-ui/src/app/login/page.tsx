@@ -12,7 +12,6 @@ export default function LoginPage() {
   const handleLogin = async () => {
       try {
         const loginService = new LoginService();
-        console.log(username);
         const response = await loginService.login(username);
         localStorage.setItem('ownerId', response.toString());
         router.push('/');
@@ -24,26 +23,14 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 bg-primary-dark">
-      <Card
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          padding: 10,
-          borderRadius: 2,
-          boxShadow: 3,
-        }}
-        noValidate
-        autoComplete="off"
-        className="p-10 bg-primary-dark-lighter"
-      >
+      <Card className="p-10 bg-primary-dark-lighter">
         <h1 className="text-2xl font-bold mb-4 text-white">ورود</h1>
         <Input
           label="نام کاربری"
           variant="outlined"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          size="gl"
+          size="lg"
           color="white"
           className="text-white"
         />

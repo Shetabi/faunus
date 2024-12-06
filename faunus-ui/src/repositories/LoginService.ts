@@ -6,7 +6,6 @@ class LoginService {
       const response = await axiosInstance.post(`/login`, {
             userName: ownerName
           });
-      console.log(response);
       return response.data.ownerId;
 
     } catch (error) {

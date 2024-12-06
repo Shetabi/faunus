@@ -13,16 +13,6 @@ interface WateringDetailsProps {
 
 const repository = new WateringSubscriptionRepository();
 
-const handlePointerLeave = () => {
-    // No operation
-};
-
-const props = {
-    placeholder: 'watering',
-    onPointerEnterCapture: {handlePointerLeave},
-    onPointerLeaveCapture: {handlePointerLeave}
-}
-
 const WateringDetails: React.FC<WateringDetailsProps> = ( { watering, plantId} ) => {
 
       const [wateringRegistered, setWateringRegistered] = useState(false);
@@ -31,27 +21,23 @@ const WateringDetails: React.FC<WateringDetailsProps> = ( { watering, plantId} )
           const ownerId = localStorage.getItem('ownerId');
           repository.fetchCurrentStatus(ownerId, plantId)
           .then(response => {
-                console.log("status=" + " " + JSON.stringify(response));
                 if (response.status === WateringSubscriptionStatus.SUBSCRIBED) {
                     setWateringRegistered(true);
                 } else {
                     setWateringRegistered(false);
                 }
           }).catch(err => {
-              console.log(JSON.stringify(err));
+                 console.log(JSON.stringify(err));
               }
-
           );
-
-
-      }, []);
+      });
 
 
     const onToggleEvent = (e) => {
 
         askPermission().then(() => {
             const ownerId = localStorage.getItem('ownerId');
-            console.log(` toggle ${wateringRegistered}`);
+            askPermission();
             if (!ownerId || !plantId) {
                 return;
             }
@@ -71,10 +57,10 @@ const WateringDetails: React.FC<WateringDetailsProps> = ( { watering, plantId} )
             <Switch onChange={onToggleEvent} color="white" checked={wateringRegistered} label={
                     <div className="mr-4 text-white">آبیاری را یادآوری کن</div>
                 } />
-            <Typography variant="h3" className={`text-white font-vazirmatn mt-8`} {...props}>
+            <Typography variant="h3" className={`text-white font-vazirmatn mt-8`}>
                         {watering?.title}
             </Typography>
-            <Typography className={`text-white font-vazirmatn mt-4`} {...props}>
+            <Typography className={`text-white font-vazirmatn mt-4`}>
                 {watering?.description}
             </Typography>
          </div>

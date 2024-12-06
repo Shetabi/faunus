@@ -1,84 +1,50 @@
 importScripts('https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.5.0/firebase-messaging-compat.js');
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
-};
+// Fetch Firebase config from API
+self.addEventListener('install', () => {
+  self.skipWaiting(); // Force the waiting service worker to become the active one
+});
 
-firebase.initializeApp(firebaseConfig);
+self.addEventListener('activate', () => {
+  clients.claim(); // Claim clients so it's active immediately
+});
 
-class CustomPushEvent extends Event {
-    constructor(data) {
-        super('push');
+async function initializeFirebase() {
+  const configResponse = await fetch('/api/firebase-config');
+  console.log('config received ', configResponse);
+  const firebaseConfig = await configResponse.json();
 
-        Object.assign(this, data);
-        this.custom = true;
-    }
+  console.log('background config', firebaseConfig);
+
+  // Initialize Firebase with the dynamically fetched config
+  firebase.initializeApp(firebaseConfig);
+
+  const messaging = firebase.messaging();
+
+  messaging.onBackgroundMessage((payload) => {
+    console.log('[firebase-messaging-sw.js] Received background message ', payload);
+
+    const { title, body, image, icon, ...restPayload } = payload.notification || {};
+    const notificationTitle = title || 'New Notification';
+    const notificationBody = body || 'You have received a new message.';
+    const notificationOptions = {
+      body: notificationBody,
+      icon: icon || '/icons/apple-touch-icon.png',
+      data: restPayload || {},
+      image: image || undefined,
+    };
+
+      // Handle `data`-only messages
+      if (!payload.notification) {
+        const { title: dataTitle, body: dataBody, ...data } = payload.data || {};
+        notificationTitle = dataTitle || 'New Notification';
+        notificationBody = dataBody || 'You have received a new message.';
+        notificationOptions.data = data;
+      }
+
+    return self.registration.showNotification(notificationTitle, notificationOptions);
+  });
 }
 
-/*
- * Overrides push notification data, to avoid having 'notification' key and firebase blocking
- * the message handler from being called
- */
-self.addEventListener('push', (e) => {
-    // Skip if event is our own custom event
-    if (e.custom) return;
-
-    // Keep old event data to override
-    const oldData = e.data;
-
-    // Create a new event to dispatch, pull values from notification key and put it in data key,
-    // and then remove notification key
-    const newEvent = new CustomPushEvent({
-        data: {
-            ehheh: oldData.json(),
-            json() {
-                const newData = oldData.json();
-                newData.data = {
-                    ...newData.data,
-                    ...newData.notification,
-                };
-                delete newData.notification;
-                return newData;
-            },
-        },
-        waitUntil: e.waitUntil.bind(e),
-    });
-
-    // Stop event propagation
-    e.stopImmediatePropagation();
-
-    // Dispatch the new wrapped event
-    dispatchEvent(newEvent);
-});
-
-const messaging = firebase.messaging();
-
-messaging.onBackgroundMessage((payload) => {
-     console.log('[firebase-messaging-sw.js] Received background message ', payload);
-
-    const { title, body, image, icon, ...restPayload } = payload.data;
-    const notificationOptions = {
-        body,
-        icon: image || '/icons/apple-touch-icon.png', // path to your "fallback" firebase notification logo
-        data: restPayload,
-    };
-    return self.registration.showNotification(title, notificationOptions);
-});
-
-self.addEventListener('notificationclick', (event) => {
-    if (event?.notification?.data && event?.notification?.data?.link) {
-        self.clients.openWindow(event.notification.data.link);
-    }
-
-    // close notification after click
-    event.notification.close();
-});
+initializeFirebase();
