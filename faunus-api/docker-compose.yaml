@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14 # Use the PostgreSQL image
+    ports:
+      - "5432:5432" # Map PostgreSQL port
+    environment:
+      POSTGRES_DB: faunus # Name of the database
+      POSTGRES_USER: postgres # Database username
+      POSTGRES_PASSWORD: password # Database password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persist data
+
+volumes:
+  postgres_data: # Create a named volume for PostgreSQL data

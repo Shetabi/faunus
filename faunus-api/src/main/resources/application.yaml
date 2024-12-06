@@ -1,8 +1,14 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:plantdb;MODE=PostgreSQL
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    url: jdbc:postgresql://faunus-db.internal:5432/faunus
+    username: postgres
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    docker:
+      compose:
+        enabled: false
 server:
   address: 0.0.0.0
   port: 8080
+firebase:
+  config: ${FIREBASE_CONFIG}

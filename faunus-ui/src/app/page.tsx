@@ -8,22 +8,26 @@ import PlantCard from 'src/components/plant-card/PlantCard';
 import { Vazirmatn } from "next/font/google";
 import { Plant } from "src/types/Plant";
 import PlantRepository from 'src/repositories/PlantRepository';
+import firebase from 'firebase/app';
+import 'firebase/messaging';
+import NotificationListener from 'src/components/push-notification/NotificationListener';
+import withAuth from 'src/components/auth/withAuth';
 
 const vazirmatn = Vazirmatn({
     subsets: ['latin'],
     variable: '--font-vazirmatn',
     }
-    );
+);
+const repository = new PlantRepository();
 
-export default function Home() {
-    const [plant, setPlant] = useState<Plant>({ id: 0, name: '', watering: undefined });
+function  Home() {
+    const [plant, setPlant] = useState<Plant>({ });
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const repository = new PlantRepository();
-
-                const plant = await repository.fetchPlant();
+                const ownerId = localStorage.getItem('ownerId');
+                const plant = await repository.fetchPlant(ownerId);
                 setPlant(plant);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -34,7 +38,9 @@ export default function Home() {
     }, []);
         return (
         <main className={vazirmatn.variable}>
+            <NotificationListener />
             <PlantCard plant={ plant }/>
         </main>
       );
     }
+export default withAuth(Home);
